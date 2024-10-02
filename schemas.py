@@ -14,7 +14,7 @@ class KittenSchema(BaseModel):
     breed_id: int
     
     @field_validator('age')
-    def age_must_be_positive(self, value):
+    def age_must_be_positive(cls, value):
         if value <= 0:
             raise ValueError("Возраст котенка должен быть больше 0")
         return value

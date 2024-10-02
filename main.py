@@ -38,15 +38,15 @@ async def create_kitten(kitten_in: KittenSchema):
 
 
 @app.put("/api/kittens/{id}")
-async def update_kittens(id: int, kitten_in: KittenSchema):
+async def update_kitten(id: int, kitten_in: KittenSchema):
     kitten_query = db.query(Kitten).filter(Kitten.id == id)
-    update_kitten = kitten_query.first()
-    if update_kitten is None:
+    kitten_new = kitten_query.first()
+    if kitten_new is None:
         return JSONResponse(status_code=404, content={"message": f"Котенок с id {id} не найден"})
     kitten_query.update(kitten_in.model_dump())
     db.commit()
-    db.refresh(update_kitten)
-    return {"message": "Котенок обновлен", "data": update_kitten}
+    db.refresh(kitten_new)
+    return {"message": "Котенок обновлен", "data": kitten_new}
 
 
 @app.delete("/api/kittens/{id}")
