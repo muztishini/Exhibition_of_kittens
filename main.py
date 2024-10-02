@@ -14,6 +14,14 @@ async def get_breeds():
     return breeds
 
 
+@app.get("/api/breeds/{id}", response_model=List[KittensOutSchema])
+async def get_kittens_by_breed(id: int):
+    kittens = db.query(Kitten).filter(Kitten.breed_id == id).all()
+    if not kittens:
+        return JSONResponse(status_code=404, content={"message": f"Котят такой породы не обнаружено"})
+    return kittens
+
+
 @app.get("/api/kittens", response_model=List[KittensOutSchema])
 async def get_kittens():
     kittens = db.query(Kitten).all()
